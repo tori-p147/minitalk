@@ -3,55 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:47 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/17 22:12:39 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:12:11 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	server_handler(int sig_num)
+extern void	handler(int signo)
 {
-	if (sig_num == 1)
+	if (signo == SIGUSR1)
 	{
 		ft_printf("sig1 was handle");
 	}
-	else if (sig_num == 2)
+	else if (signo == SIGUSR2)
 	{
 		ft_printf("sig1 was handle");
 	}
-}
-
-void	init_server(t_server *server)
-{
-	server->pid = "12345\n";
 }
 
 int	start_server(void)
 {
-	t_server			server;
-	struct sigaction	sa;
+	struct sigaction	act;
 	int					server_up;
+	int					is_sig_handle;
+	sigset_t			set;
+	pid_t				server_pid;
 
-	sa.sa_handler = server_handler;
-	init_server(&server);
-	ft_printf("%s", server.pid);
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR1);
+	sigaddset(&set, SIGUSR2);
+	act.sa_mask = set;
+	act.sa_handler = handler;
+	act.sa_flags = 0;
 	while (1)
 	{
-		server_up = sigaction(1, &sa, NULL);
-		if (-1)
+		server_pid = getpid();
+		ft_printf("%d\n", server_pid);
+		server_up = sigaction(SIGUSR1, &act, NULL);
+		if (server_up == -1)
 		{
 			ft_printf("Error\n");
 			return (1);
 		}
-		server_up = sigaction(2, &sa, NULL);
-		if (-1)
+		server_up = sigaction(SIGUSR2, &act, NULL);
+		if (server_up == -1)
 		{
 			ft_printf("Error\n");
 			return (1);
 		}
+		is_sig_handle = pause();
+		if (is_sig_handle == -1)
+			exit(EXIT_FAILURE);
 	}
 	return (0);
 }
