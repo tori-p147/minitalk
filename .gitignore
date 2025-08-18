@@ -1,0 +1,10 @@
+# Ignore compiled files
+*.o
+*.a
+*.json
+
+# Ignore IDE folders
+.vscode/
+
+server
+client
