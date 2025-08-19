@@ -6,30 +6,29 @@
 /*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:45 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/18 18:55:35 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/19 19:01:48 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int	to_binary(unsigned char c)
-{
-	int	ascii;
-
-	ascii = (int)c;
-	
-}
-
 void	send_signal(int pid, unsigned char c)
 {
 	int	i;
 	int bit;
+	int sig;
+	int is_success;
 
 	i = 0;
-	while (i < 8)
+	while (i-- > 0)
 	{
-		bit = to_binary(c);
-		kill();
+		sig = (c >> i) & 1;
+		if (sig == 1)
+			is_success = kill(pid, SIGUSR1);
+		else if (sig == 0)
+			is_success = kill(pid, SIGUSR2);
+		if (is_success == -1)
+			exit(EXIT_FAILURE);
 		usleep(50);
 		i++;
 	}

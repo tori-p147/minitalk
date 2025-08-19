@@ -6,29 +6,45 @@
 /*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:47 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/18 18:12:11 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:52:43 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+void to_char(char c[])
+{
+	unsigned char ch;
+	int i;
+
+	i = 7;
+	while (i-- < 0)
+	{
+		ch += c[i] << i;
+	}
+	ft_printf("Server get char: %c\n", ch);
+}
+
 extern void	handler(int signo)
 {
+	char c[8];
 	if (signo == SIGUSR1)
 	{
-		ft_printf("sig1 was handle");
+		ft_printf("1 was handle");
 	}
 	else if (signo == SIGUSR2)
 	{
-		ft_printf("sig1 was handle");
+		ft_printf("0 was handle");
 	}
+	if (c[8] != NULL)
+		to_char(signo);
 }
 
 int	start_server(void)
 {
 	struct sigaction	act;
-	int					server_up;
-	int					is_sig_handle;
+	int					catch_sig;
+	int					wait_signal;
 	sigset_t			set;
 	pid_t				server_pid;
 
@@ -42,20 +58,14 @@ int	start_server(void)
 	{
 		server_pid = getpid();
 		ft_printf("%d\n", server_pid);
-		server_up = sigaction(SIGUSR1, &act, NULL);
-		if (server_up == -1)
-		{
-			ft_printf("Error\n");
-			return (1);
-		}
-		server_up = sigaction(SIGUSR2, &act, NULL);
-		if (server_up == -1)
-		{
-			ft_printf("Error\n");
-			return (1);
-		}
-		is_sig_handle = pause();
-		if (is_sig_handle == -1)
+		catch_sig = sigaction(SIGUSR1, &act, NULL);
+		if (catch_sig == -1)
+			exit(EXIT_FAILURE);
+		catch_sig = sigaction(SIGUSR2, &act, NULL);
+		if (catch_sig == -1)
+			exit(EXIT_FAILURE);
+		wait_signal = pause();
+		if (wait_signal == -1)
 			exit(EXIT_FAILURE);
 	}
 	return (0);
