@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:52:56 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/07/29 13:47:14 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/19 21:42:42 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+int					ft_isdigit_int(unsigned int c);
+int					ft_atoi(const char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(unsigned long c);
 void				*ft_memset(void *s, int value, size_t num);

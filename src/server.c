@@ -3,41 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:47 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/19 18:52:43 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/19 21:32:26 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void to_char(char c[])
+char	*to_char(int signo)
 {
-	unsigned char ch;
-	int i;
-
-	i = 7;
-	while (i-- < 0)
-	{
-		ch += c[i] << i;
-	}
-	ft_printf("Server get char: %c\n", ch);
+	ft_printf("Server get sig: %d\n", signo);
+	return ("!\n");
 }
 
 extern void	handler(int signo)
 {
-	char c[8];
+	char	*c;
+	int		counter;
+
+	counter = 0;
 	if (signo == SIGUSR1)
 	{
 		ft_printf("1 was handle");
+		counter++;
 	}
 	else if (signo == SIGUSR2)
 	{
 		ft_printf("0 was handle");
+		counter++;
 	}
-	if (c[8] != NULL)
-		to_char(signo);
+	c = to_char(signo);
+	ft_printf("handle c in handler %c\n", c);
+
 }
 
 int	start_server(void)
