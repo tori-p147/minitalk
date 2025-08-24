@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 18:49:59 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/19 17:56:06 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/24 22:01:42 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <signal.h>
 # include <unistd.h>
 
-int			start_server(void);
-int			catch_client_response(char **argv);
-void		send_signal(int pid, unsigned char c);
+int		start_server(void);
+void	catch_client_response(char **argv);
+void	send_signal(int pid, unsigned char c);
 
 #endif

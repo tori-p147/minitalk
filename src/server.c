@@ -6,46 +6,36 @@
 /*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:47 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/19 21:32:26 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/24 21:59:59 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-char	*to_char(int signo)
-{
-	ft_printf("Server get sig: %d\n", signo);
-	return ("!\n");
-}
-
 extern void	handler(int signo)
 {
-	char	*c;
-	int		counter;
+	static unsigned char	c = '\0';
+	static int				bit_count = 0;
 
-	counter = 0;
+	c <<= 1;
 	if (signo == SIGUSR1)
-	{
-		ft_printf("1 was handle");
-		counter++;
-	}
+		c |= 1;
 	else if (signo == SIGUSR2)
+		c |= 0;
+	bit_count++;
+	if (bit_count == 8)
 	{
-		ft_printf("0 was handle");
-		counter++;
+		ft_printf("%c", c);
+		bit_count = 0;
+		c = '\0';
 	}
-	c = to_char(signo);
-	ft_printf("handle c in handler %c\n", c);
-
 }
 
 int	start_server(void)
 {
 	struct sigaction	act;
-	int					catch_sig;
 	int					wait_signal;
 	sigset_t			set;
-	pid_t				server_pid;
 
 	sigemptyset(&set);
 	sigaddset(&set, SIGUSR1);
@@ -53,19 +43,12 @@ int	start_server(void)
 	act.sa_mask = set;
 	act.sa_handler = handler;
 	act.sa_flags = 0;
+	ft_printf("%d\n", getpid());
 	while (1)
 	{
-		server_pid = getpid();
-		ft_printf("%d\n", server_pid);
-		catch_sig = sigaction(SIGUSR1, &act, NULL);
-		if (catch_sig == -1)
-			exit(EXIT_FAILURE);
-		catch_sig = sigaction(SIGUSR2, &act, NULL);
-		if (catch_sig == -1)
-			exit(EXIT_FAILURE);
+		sigaction(SIGUSR1, &act, NULL);
+		sigaction(SIGUSR2, &act, NULL);
 		wait_signal = pause();
-		if (wait_signal == -1)
-			exit(EXIT_FAILURE);
 	}
 	return (0);
 }
@@ -74,6 +57,7 @@ int	main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	start_server();
-	return (0);
+	if (start_server())
+		exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }

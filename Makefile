@@ -19,7 +19,7 @@ COPY = cp
 AR = ar rcs
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(PRINTF_DIR)/includes
+INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(PRINTF_DIR)/$(INC_DIR)
 
 all: $(SERVER) $(CLIENT)
 
@@ -54,4 +54,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
