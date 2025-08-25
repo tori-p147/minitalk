@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:45 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/25 19:07:42 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/24 22:03:45 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	send_signal(int pid, unsigned char c)
 {
 	int	i;
 	int sig;
+	int is_success;
 	int ascii_code;
 
 	i = 8;
@@ -24,9 +25,11 @@ void	send_signal(int pid, unsigned char c)
 	{
 		sig = ascii_code >> i & 1;
 		if (sig == 1)
-			kill(pid, SIGUSR1);
+			is_success = kill(pid, SIGUSR1);
 		else if (sig == 0)
-			kill(pid, SIGUSR2);
+			is_success = kill(pid, SIGUSR2);
+		if (is_success == -1)
+			exit(EXIT_FAILURE);
 		usleep(500);
 	}
 }
