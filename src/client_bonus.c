@@ -1,36 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmatsuda <vmatsuda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:45 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/24 22:03:45 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/26 15:09:13 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+void	handler(int signo)
+{
+	if (signo == SIGUSR1)
+		ft_printf("Server receivde signal 1\n");
+	else if (signo == SIGUSR2)
+		ft_printf("Server receivde signal 0\n");
+	g_is_signal_received = 1;
+}
+
 void	send_signal(int pid, unsigned char c)
 {
 	int	i;
-	int sig;
-	int is_success;
-	int ascii_code;
+	int	sig;
+	int	ascii_code;
 
 	i = 8;
 	ascii_code = c;
 	while (i--)
 	{
+		g_is_signal_received = 0;
 		sig = ascii_code >> i & 1;
 		if (sig == 1)
-			is_success = kill(pid, SIGUSR1);
+			kill(pid, SIGUSR1);
 		else if (sig == 0)
-			is_success = kill(pid, SIGUSR2);
-		if (is_success == -1)
-			exit(EXIT_FAILURE);
-		usleep(500);
+			kill(pid, SIGUSR2);
+		while (!g_is_signal_received)
+			usleep(50);
 	}
 }
 
@@ -52,10 +60,22 @@ void	catch_client_response(char **argv)
 	}
 }
 
+void	set_sig_handler(void)
+{
+	struct sigaction	act;
+
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	act.sa_handler = handler;
+	sigaction(SIGUSR1, &act, NULL);
+	sigaction(SIGUSR2, &act, NULL);
+}
+
 int	main(int argc, char **argv)
 {
 	if (argc == 3)
 	{
+		set_sig_handler();
 		catch_client_response(argv);
 		exit(EXIT_SUCCESS);
 	}

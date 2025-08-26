@@ -1,4 +1,4 @@
-NAME = libftprintf.a
+NAME = printf.a
 
 SRC_DIR = src
 INC_DIR = includes
@@ -19,7 +19,7 @@ all: $(LIBFT_A) $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-#incude libft.a as libftprintf.a 
+#incude libft.a as printf.a 
 $(NAME): $(OBJ)
 	$(COPY) $(LIBFT_A) $(NAME)
 	$(AR) $(NAME) $(OBJ)

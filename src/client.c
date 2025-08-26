@@ -6,7 +6,7 @@
 /*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:45 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/25 19:07:42 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:25:20 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	send_signal(int pid, unsigned char c)
 {
 	int	i;
-	int sig;
-	int ascii_code;
+	int	sig;
+	int	ascii_code;
 
 	i = 8;
 	ascii_code = c;

@@ -6,13 +6,13 @@
 /*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:29:47 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/08/25 18:36:34 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:37:21 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-extern void	handler(int signo)
+void	handler(int signo)
 {
 	static unsigned char	c = '\0';
 	static int				bit_count = 0;
@@ -40,8 +40,7 @@ int	start_server(void)
 	act.sa_handler = handler;
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
-	ft_printf("%d\n", getpid());
-
+	ft_printf("PID: %d\n", getpid());
 	while (1)
 		pause();
 	return (0);

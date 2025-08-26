@@ -6,7 +6,7 @@
 /*   By: vmatsuda <vmatsuda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 17:55:25 by vmatsuda          #+#    #+#             */
-/*   Updated: 2025/07/31 17:43:18 by vmatsuda         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:25:00 by vmatsuda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ static int	count_words(const char *str, char c)
 // 5. add strings to copies array by substr
 // 6. move pointer str to next word or charset symbol
 
-char	**
-ft_split(char const *str, char c)
+char	**ft_split(char const *str, char c)
 {
 	int		i;
 	char	**copies;
